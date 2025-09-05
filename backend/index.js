@@ -17,9 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// ✅ Allow both local dev & production frontend
 const corsOptions = {
-  origin: 'https://joblift.vercel.app', 
-  credentials: true                     
+  origin: [
+    "https://joblift.vercel.app"    // production frontend
+  ],
+  credentials: true
 };
 
 app.use(cors(corsOptions));
@@ -35,5 +38,6 @@ const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
   connectDB();
-  console.log(`Server running at port ${PORT}`);
+  console.log(`✅ Server running at port ${PORT}`);
 });
+

@@ -8,7 +8,7 @@ import companyRoute from "./routes/company.route.js";
 import jobRoute from "./routes/job.route.js";
 import applicationRoute from "./routes/application.route.js";
 
-dotenv.config({});
+dotenv.config();
 
 const app = express();
 
@@ -17,15 +17,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ Allow both local dev & production frontend
+// ✅ CORS configuration
 const corsOptions = {
   origin: [
-    "https://joblift.vercel.app"    // production frontend
+    "http://localhost:3000",        // dev frontend
+    "https://joblift.vercel.app",   // production frontend
   ],
-  credentials: true
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options("*", cors(corsOptions));
 
 // API routes
 app.use("/api/v1/user", userRoute);
